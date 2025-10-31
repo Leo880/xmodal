@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
@@ -10,70 +9,62 @@ function App() {
     phone: "",
     dob: "",
   });
-
   const modalRef = useRef();
 
-  // Handle clicking outside modal to close it
+  // Close modal when clicking outside
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (isModalOpen && modalRef.current && !modalRef.current.contains(event.target)) {
-      setIsModalOpen(false);
-    }
-  };
-  document.addEventListener("click", handleClickOutside);
-  return () => document.removeEventListener("click", handleClickOutside);
-}, [isModalOpen]);
+    const handleClickOutside = (e) => {
+      if (isModalOpen && modalRef.current && !modalRef.current.contains(e.target)) {
+        setIsModalOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isModalOpen]);
 
-
+  // Handle field changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  // Form submission with Cypress-friendly validation
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const { username, email, phone, dob } = formData;
+    const { username, email, phone, dob } = formData;
 
-  // Empty field validation
-  if (!username || !email || !phone || !dob) {
-    alert("All fields are required.");
-    return;
-  }
+    // Check email validity
+    if (!email.includes("@")) {
+      alert("Invalid email. Please check your email address.");
+      return;
+    }
 
-  // Email validation
-  if (!email.includes("@")) {
-    alert("Invalid email. Please check your email address.");
-    return;
-  }
+    // Check phone validity (10 digits only)
+    if (!/^\d{10}$/.test(phone)) {
+      alert("Invalid phone number. Please enter a 10-digit phone number.");
+      return;
+    }
 
-  // Phone validation
-  if (!/^\d{10}$/.test(phone)) {
-    alert("Invalid phone number. Please enter a 10-digit phone number.");
-    return;
-  }
+    // Check DOB validity (cannot be in future)
+    const enteredDate = new Date(dob);
+    const today = new Date();
+    if (enteredDate > today) {
+      alert("Invalid date of birth. Please select a valid date.");
+      return;
+    }
 
-  // DOB validation
-  const enteredDate = new Date(dob);
-  const today = new Date();
-  if (enteredDate > today) {
-    alert("Invalid date of birth. Please select a valid date.");
-    return;
-  }
-
-  // Success
-  alert("Form submitted successfully!");
-  setIsModalOpen(false);
-  setFormData({
-    username: "",
-    email: "",
-    phone: "",
-    dob: "",
-  });
-};
-
+    alert("Form submitted successfully!");
+    setIsModalOpen(false);
+    setFormData({
+      username: "",
+      email: "",
+      phone: "",
+      dob: "",
+    });
+  };
 
   return (
-    <div className="App">
+    <div id="root">
       {!isModalOpen && (
         <button onClick={() => setIsModalOpen(true)}>Open Form</button>
       )}
@@ -97,7 +88,7 @@ function App() {
                 <label htmlFor="email">Email:</label>
                 <input
                   id="email"
-                  type="email"
+                  type="text"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -135,54 +126,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
-
-*/

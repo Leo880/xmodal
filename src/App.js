@@ -12,15 +12,17 @@ function App() {
   const modalRef = useRef();
 
   // Close modal when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (isModalOpen && modalRef.current && !modalRef.current.contains(e.target)) {
-        setIsModalOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isModalOpen]);
+useEffect(() => {
+  const handleOutsideClick = (e) => {
+    // Ensure modalRef exists and modal is open
+    if (isModalOpen && modalRef.current && !modalRef.current.contains(e.target)) {
+      setIsModalOpen(false);
+    }
+  };
+  document.addEventListener("click", handleOutsideClick, true);
+  return () => document.removeEventListener("click", handleOutsideClick, true);
+}, [isModalOpen]);
+
 
   // Handle field changes
   const handleChange = (e) => {

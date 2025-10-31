@@ -3,27 +3,26 @@
   margin-top: 100px;
 }
 
-/* Overlay */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1000;
 }
 
-/* Modal content */
 .modal-content {
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
-  width: 300px;
+  border-radius: 8px;
+  min-width: 320px;
   text-align: left;
+  z-index: 1001;
 }
 
 .submit-button {
@@ -38,4 +37,11 @@
 
 .submit-button:hover {
   background-color: #0056b3;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }

@@ -15,71 +15,62 @@ function App() {
 
   // Handle clicking outside modal to close it
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isModalOpen && modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isModalOpen]);
+  const handleClickOutside = (event) => {
+    if (isModalOpen && modalRef.current && !modalRef.current.contains(event.target)) {
+      setIsModalOpen(false);
+    }
+  };
+  document.addEventListener("click", handleClickOutside);
+  return () => document.removeEventListener("click", handleClickOutside);
+}, [isModalOpen]);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const { username, email, phone, dob } = formData;
+  const { username, email, phone, dob } = formData;
 
-    // Validation for empty fields
-    if (!username.trim()) {
-      alert("Please fill out the Username field.");
-      return;
-    }
-    if (!email.trim()) {
-      alert("Please fill out the Email field.");
-      return;
-    }
-    if (!phone.trim()) {
-      alert("Please fill out the Phone Number field.");
-      return;
-    }
-    if (!dob.trim()) {
-      alert("Please fill out the Date of Birth field.");
-      return;
-    }
+  // Empty field validation
+  if (!username || !email || !phone || !dob) {
+    alert("All fields are required.");
+    return;
+  }
 
-    // Email validation
-    if (!email.includes("@")) {
-      alert("Invalid email. Please check your email address.");
-      return;
-    }
+  // Email validation
+  if (!email.includes("@")) {
+    alert("Invalid email. Please check your email address.");
+    return;
+  }
 
-    // Phone validation
-    if (!/^\d{10}$/.test(phone)) {
-      alert("Invalid phone number. Please enter a 10-digit phone number.");
-      return;
-    }
+  // Phone validation
+  if (!/^\d{10}$/.test(phone)) {
+    alert("Invalid phone number. Please enter a 10-digit phone number.");
+    return;
+  }
 
-    // DOB validation
-    const enteredDate = new Date(dob);
-    const today = new Date();
-    if (enteredDate > today) {
-      alert("Invalid date of birth. Please select a valid date.");
-      return;
-    }
+  // DOB validation
+  const enteredDate = new Date(dob);
+  const today = new Date();
+  if (enteredDate > today) {
+    alert("Invalid date of birth. Please select a valid date.");
+    return;
+  }
 
-    // Success: close modal and reset
-    setIsModalOpen(false);
-    setFormData({
-      username: "",
-      email: "",
-      phone: "",
-      dob: "",
-    });
-  };
+  // Success
+  alert("Form submitted successfully!");
+  setIsModalOpen(false);
+  setFormData({
+    username: "",
+    email: "",
+    phone: "",
+    dob: "",
+  });
+};
+
 
   return (
     <div className="App">
